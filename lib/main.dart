@@ -70,7 +70,7 @@ class FeedsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
+        navigationBar: const CupertinoNavigationBar(
           middle: Text('Feeds Page'),
         ),
         child: Center(
@@ -82,12 +82,63 @@ class FeedsPage extends StatelessWidget {
                 style:
                     CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               CupertinoButton.filled(
-                child: Text('Select Category'),
-                onPressed: () {},
+                child: const Text('Select Category'),
+                onPressed: () {
+                  showCupertinoModalPopup(
+                    context: context,
+                    builder: (context) {
+                      return CupertinoActionSheet(
+                        title: const Text('Select Category'),
+                        actions: [
+                          CupertinoActionSheetAction(
+                            onPressed: () {
+                              Navigator.push(context, CupertinoPageRoute(
+                                builder: (context) {
+                                  return const CategoryPage(
+                                    selectedCategory: 'Technology',
+                                  );
+                                },
+                              ));
+                            },
+                            child: const Text('Technology'),
+                          ),
+                          CupertinoActionSheetAction(
+                            onPressed: () {
+                              Navigator.push(context, CupertinoPageRoute(
+                                builder: (context) {
+                                  return const CategoryPage(
+                                    selectedCategory: 'Business',
+                                  );
+                                },
+                              ));
+                            },
+                            child: const Text('Business'),
+                          ),
+                          CupertinoActionSheetAction(
+                            onPressed: () {
+                              Navigator.push(context, CupertinoPageRoute(
+                                builder: (context) {
+                                  return const CategoryPage(
+                                    selectedCategory: 'Sport',
+                                  );
+                                },
+                              ));
+                            },
+                            child: const Text('Sport'),
+                          ),
+                        ],
+                        cancelButton: CupertinoActionSheetAction(
+                          child: const Text('Close'),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
             ],
           ),
@@ -101,7 +152,7 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
+        navigationBar: const CupertinoNavigationBar(
           middle: Text('Search Page'),
         ),
         child: Center(
@@ -119,14 +170,52 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
+        navigationBar: const CupertinoNavigationBar(
           middle: Text('Settings Page'),
         ),
         child: Center(
-          child: Text(
-            'Settings Page',
-            style: CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
-          ),
-        ));
+            child: CupertinoButton(
+          child: Text('Log Out'),
+          onPressed: () {
+            showCupertinoDialog(
+              context: context,
+              builder: (context) {
+                return CupertinoAlertDialog(
+                  title: Text('Are you sure to log out?'),
+                  actions: [
+                    CupertinoDialogAction(
+                      child: Text('No'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    CupertinoDialogAction(
+                      child: Text('Yes'),
+                      onPressed: () => Navigator.pop(context),
+                    )
+                  ],
+                );
+              },
+            );
+          },
+        )));
+  }
+}
+
+class CategoryPage extends StatelessWidget {
+  final String selectedCategory;
+  const CategoryPage({super.key, required this.selectedCategory});
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: Text('$selectedCategory Page'),
+      ),
+      child: Center(
+        child: Text(
+          '$selectedCategory Page',
+          style: CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
+        ),
+      ),
+    );
   }
 }
